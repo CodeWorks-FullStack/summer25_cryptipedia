@@ -4,6 +4,10 @@ import { AppState } from "@/AppState.js"
 import { Cryptid } from "@/models/Cryptid.js"
 
 class CryptidsService {
+  async getCryptidById(cryptidId) {
+    const response = await api.get(`api/cryptids/${cryptidId}`)
+    logger.log('GOT CRYPTID', response.data)
+  }
   async getCryptids() {
     const response = await api.get('api/cryptids')
     logger.log('GOT CRYPTIDS', response.data)
