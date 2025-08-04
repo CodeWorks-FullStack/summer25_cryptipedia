@@ -8,18 +8,21 @@ defineProps({
 
 
 <template>
-  <div class="position-relative shadow ibm-plex-mono-font">
-    <img :src="cryptid.imgUrl" :alt="'a blurry picture of the ' + cryptid.name">
-    <div class="encounter-info mx-2">
-      <span class="mdi mdi-ufo"></span>
-      0
+  <RouterLink :to="{ name: 'Cryptid Details', params: { cryptidId: cryptid.id } }"
+    :title="`Go to the ${cryptid.name} page`">
+    <div class="position-relative shadow ibm-plex-mono-font text-light">
+      <img :src="cryptid.imgUrl" :alt="'a blurry picture of the ' + cryptid.name">
+      <div class="encounter-info mx-2">
+        <span class="mdi mdi-ufo"></span>
+        0
+      </div>
+      <div class="cryptid-info p-2">
+        <span v-if="cryptid.id < 10">0</span>{{ cryptid.id }}
+        <hr>
+        <span>{{ cryptid.name }}</span>
+      </div>
     </div>
-    <div class="cryptid-info p-2">
-      <span v-if="cryptid.id < 10">0</span>{{ cryptid.id }}
-      <hr>
-      <span>{{ cryptid.name }}</span>
-    </div>
-  </div>
+  </RouterLink>
 </template>
 
 
