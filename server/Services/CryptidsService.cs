@@ -1,4 +1,5 @@
 
+
 namespace cryptipedia.Services;
 
 public class CryptidsService
@@ -14,5 +15,11 @@ public class CryptidsService
   {
     Cryptid cryptid = _repository.Create(cryptidData);
     return cryptid;
+  }
+
+  internal List<Cryptid> GetCryptids()
+  {
+    List<Cryptid> cryptids = _repository.GetAll();
+    return cryptids;
   }
 }

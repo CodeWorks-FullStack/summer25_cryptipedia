@@ -29,4 +29,19 @@ public class CryptidsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  [HttpGet]
+  public ActionResult<List<Cryptid>> GetCryptids()
+  {
+    try
+    {
+      // TODO show how to query
+      List<Cryptid> cryptids = _cryptidsService.GetCryptids();
+      return Ok(cryptids);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 }

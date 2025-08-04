@@ -43,7 +43,21 @@ public class CryptidsRepository : IRepository<Cryptid>
 
   public List<Cryptid> GetAll()
   {
-    throw new NotImplementedException();
+    string sql = @"
+    SELECT
+    cryptids.*,
+    accounts.*
+    FROM cryptids
+    JOIN accounts ON accounts.id = cryptids.discoverer_id
+    ORDER BY cryptids.id ASC;";
+
+    List<Cryptid> cryptids = _db.Query(sql,
+    (Cryptid cryptid, Profile account) =>
+    {
+      cryptid.Discoverer = account;
+      return cryptid;
+    }).ToList();
+    return cryptids;
   }
 
   public Cryptid GetById(int id)
@@ -55,4 +69,6 @@ public class CryptidsRepository : IRepository<Cryptid>
   {
     throw new NotImplementedException();
   }
+
+
 }
