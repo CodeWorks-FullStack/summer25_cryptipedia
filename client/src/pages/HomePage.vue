@@ -1,8 +1,11 @@
 <script setup>
+import { AppState } from '@/AppState.js';
 import { cryptidsService } from '@/services/CryptidsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+
+const cryptids = computed(() => AppState.cryptids)
 
 onMounted(getCryptids)
 
@@ -36,6 +39,18 @@ async function getCryptids() {
         <div class="col-md-4 align-self-end">
           <img src="https://www.pumpkin.care/wp-content/uploads/2022/07/04_pet_portraits_nena.png"
             alt="Cryptid licking her lips" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="italiana-font display-1 my-5">Cryptids</h1>
+        </div>
+        <div v-for="cryptid in cryptids" :key="'cryptid-list-' + cryptid.id" class="col-md-3">
+          {{ cryptid.name }}
         </div>
       </div>
     </div>
