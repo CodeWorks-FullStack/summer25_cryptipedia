@@ -25,13 +25,15 @@ public class CryptidsRepository : IRepository<Cryptid>
     JOIN accounts ON accounts.id = cryptids.discoverer_id
     WHERE cryptids.id = LAST_INSERT_ID();";
 
-    Cryptid newCryptid = _db.Query(sql,
-    (Cryptid cryptid, Profile account) =>
-    {
-      cryptid.Discoverer = account;
-      return cryptid;
-    },
-    data).SingleOrDefault();
+    // Cryptid newCryptid = _db.Query(sql,
+    // (Cryptid cryptid, Profile account) =>
+    // {
+    //   cryptid.Discoverer = account;
+    //   return cryptid;
+    // },
+    // data).SingleOrDefault();
+
+    Cryptid newCryptid = _db.Query<Cryptid, Profile, Cryptid>(sql, MapDiscoverer, data).SingleOrDefault();
 
     return newCryptid;
   }
@@ -51,13 +53,14 @@ public class CryptidsRepository : IRepository<Cryptid>
     JOIN accounts ON accounts.id = cryptids.discoverer_id
     ORDER BY cryptids.id ASC;";
 
-    List<Cryptid> cryptids = _db.Query(sql,
-    (Cryptid cryptid, Profile account) =>
-    {
-      cryptid.Discoverer = account;
-      return cryptid;
-    }).ToList();
+    List<Cryptid> cryptids = _db.Query<Cryptid, Profile, Cryptid>(sql, MapDiscoverer).ToList();
     return cryptids;
+  }
+
+  private static Cryptid MapDiscoverer(Cryptid cryptid, Profile account)
+  {
+    cryptid.Discoverer = account;
+    return cryptid;
   }
 
   public Cryptid GetById(int id)
