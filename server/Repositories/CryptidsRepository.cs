@@ -25,6 +25,7 @@ public class CryptidsRepository : IRepository<Cryptid>
     JOIN accounts ON accounts.id = cryptids.discoverer_id
     WHERE cryptids.id = LAST_INSERT_ID();";
 
+    // NOTE the anonymous function still works here
     // Cryptid newCryptid = _db.Query(sql,
     // (Cryptid cryptid, Profile account) =>
     // {
@@ -73,12 +74,6 @@ public class CryptidsRepository : IRepository<Cryptid>
     return cryptids;
   }
 
-  private static Cryptid MapDiscoverer(Cryptid cryptid, Profile account)
-  {
-    cryptid.Discoverer = account;
-    return cryptid;
-  }
-
   public Cryptid GetById(int id)
   {
     string sql = @"
@@ -97,6 +92,12 @@ public class CryptidsRepository : IRepository<Cryptid>
   public void Update(Cryptid data)
   {
     throw new NotImplementedException();
+  }
+
+  private static Cryptid MapDiscoverer(Cryptid cryptid, Profile account)
+  {
+    cryptid.Discoverer = account;
+    return cryptid;
   }
 
 

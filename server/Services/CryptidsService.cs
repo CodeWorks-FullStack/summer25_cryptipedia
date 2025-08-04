@@ -31,6 +31,7 @@ public class CryptidsService
     return cryptids;
   }
   // NOTE overloads
+  // overloads allows us to reuse the same name for a method with different parameter types/number of parameters
   internal List<Cryptid> GetCryptids(string name)
   {
     List<Cryptid> cryptids = _repository.GetAll(name);
