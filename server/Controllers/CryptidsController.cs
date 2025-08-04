@@ -31,13 +31,34 @@ public class CryptidsController : ControllerBase
   }
 
   [HttpGet]
-  public ActionResult<List<Cryptid>> GetCryptids()
+  public ActionResult<List<Cryptid>> GetCryptids([FromQuery] string name) // [FromQuery] Cryptid query
   {
     try
     {
-      // TODO show how to query
-      List<Cryptid> cryptids = _cryptidsService.GetCryptids();
+      List<Cryptid> cryptids;
+      if (name == null) // if there's no query
+      {
+        cryptids = _cryptidsService.GetCryptids();
+      }
+      else
+      {
+        cryptids = _cryptidsService.GetCryptids(name);
+      }
       return Ok(cryptids);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [HttpGet("{cryptidId}")]
+  public ActionResult<Cryptid> GetCryptidById(int cryptidId)
+  {
+    try
+    {
+      Cryptid cryptid = _cryptidsService.GetCryptidById(cryptidId);
+      return Ok(cryptid);
     }
     catch (Exception exception)
     {

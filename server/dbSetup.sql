@@ -36,6 +36,13 @@ FROM
   cryptids
   JOIN accounts ON accounts.id = cryptids.discoverer_id;
 
+SELECT
+  *
+FROM
+  cryptids
+WHERE
+  name LIKE '%monster%';
+
 INSERT INTO
   cryptids (
     name,

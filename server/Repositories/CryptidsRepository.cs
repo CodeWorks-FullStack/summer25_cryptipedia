@@ -57,6 +57,22 @@ public class CryptidsRepository : IRepository<Cryptid>
     return cryptids;
   }
 
+  public List<Cryptid> GetAll(string name)
+  {
+    string sql = @"
+    SELECT
+    cryptids.*,
+    accounts.*
+    FROM cryptids
+    JOIN accounts ON accounts.id = cryptids.discoverer_id
+    WHERE cryptids.name LIKE @Name;";
+
+    object dapperParam = new { Name = $"%{name}%" };
+
+    List<Cryptid> cryptids = _db.Query<Cryptid, Profile, Cryptid>(sql, MapDiscoverer, dapperParam).ToList();
+    return cryptids;
+  }
+
   private static Cryptid MapDiscoverer(Cryptid cryptid, Profile account)
   {
     cryptid.Discoverer = account;
@@ -65,7 +81,17 @@ public class CryptidsRepository : IRepository<Cryptid>
 
   public Cryptid GetById(int id)
   {
-    throw new NotImplementedException();
+    string sql = @"
+    SELECT
+    cryptids.*,
+    accounts.*
+    FROM cryptids
+    JOIN accounts ON accounts.id = cryptids.discoverer_id
+    WHERE cryptids.id = @id;";
+
+    Cryptid foundCryptid = _db.Query<Cryptid, Profile, Cryptid>(sql, MapDiscoverer, new { id }).SingleOrDefault();
+
+    return foundCryptid;
   }
 
   public void Update(Cryptid data)
