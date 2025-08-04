@@ -29,6 +29,13 @@ SELECT
 FROM
   cryptids;
 
+SELECT
+  cryptids.*,
+  accounts.*
+FROM
+  cryptids
+  JOIN accounts ON accounts.id = cryptids.discoverer_id;
+
 INSERT INTO
   cryptids (
     name,
