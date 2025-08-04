@@ -24,6 +24,11 @@ CREATE TABLE
     FOREIGN KEY (discoverer_id) REFERENCES accounts (id) ON DELETE CASCADE
   );
 
+SELECT
+  *
+FROM
+  cryptids;
+
 INSERT INTO
   cryptids (
     name,
