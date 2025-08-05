@@ -1,6 +1,7 @@
 
 
 
+
 namespace cryptipedia.Services;
 
 public class CryptidEncountersService
@@ -16,6 +17,20 @@ public class CryptidEncountersService
   {
     CryptidEncounterProfile profile = _repository.Create(cryptidEncounterData);
     return profile;
+  }
+
+  internal void DeleteCryptidEncounter(int cryptidEncounterId, Account userInfo)
+  {
+    CryptidEncounter cryptidEncounter = GetCryptidEncounterById(cryptidEncounterId);
+    if (cryptidEncounter.AccountId != userInfo.Id) throw new Exception($"YOU CANNOT DELETE ANOTHER USER'S DATA, {userInfo.Name.ToUpper()}!");
+    _repository.Delete(cryptidEncounterId);
+  }
+
+  private CryptidEncounter GetCryptidEncounterById(int cryptidEncounterId)
+  {
+    CryptidEncounter cryptidEncounter = _repository.GetById(cryptidEncounterId);
+    if (cryptidEncounter == null) throw new Exception($"Invalid id: {cryptidEncounterId}");
+    return cryptidEncounter;
   }
 
   internal List<CryptidEncounterProfile> GetCryptidEncounterProfilesByCryptidId(int cryptidId)
