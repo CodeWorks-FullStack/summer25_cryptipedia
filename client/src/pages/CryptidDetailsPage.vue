@@ -35,6 +35,17 @@ async function getCryptidEncounterProfilesByCryptidId() {
   }
 }
 
+async function createCryptidEncounter() {
+  try {
+    const encounterData = { cryptidId: route.params.cryptidId }
+    logger.log('is data good', encounterData)
+    await cryptidEncountersService.createCryptidEncounter(encounterData)
+  } catch (error) {
+    Pop.error(error)
+    logger.error('COULD NOT CREATE ENCOUNTER', error)
+  }
+}
+
 </script>
 
 
@@ -67,6 +78,11 @@ async function getCryptidEncounterProfilesByCryptidId() {
             <p class="fs-1 text-warning">
               Encountered By {{ cryptid.encounterCount }} Human<span v-if="cryptid.encounterCount != 1">s</span>
             </p>
+            <div class="mb-3">
+              <button @click="createCryptidEncounter()" class="btn btn-warning ibm-plex-mono-font">
+                I have encountered the {{ cryptid.name }}
+              </button>
+            </div>
             <div class="d-flex flex-wrap gap-3">
               <div v-for="profile in profiles" :key="'cryptid-encounter-profile-' + profile.cryptidEncounterId">
                 <img :src="profile.picture" :alt="'A picture of ' + profile.name" class="profile-img">
