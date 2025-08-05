@@ -9,6 +9,8 @@ import { useRoute } from 'vue-router';
 
 const cryptid = computed(() => AppState.cryptid)
 const profiles = computed(() => AppState.cryptidEncounterProfiles)
+const account = computed(() => AppState.account)
+const myEncounter = computed(() => profiles.value.find(profile => profile.id == account.value?.id))
 
 const route = useRoute()
 
@@ -46,6 +48,18 @@ async function createCryptidEncounter() {
   }
 }
 
+async function deleteCryptidEncounter() {
+  const confirmed = await Pop.confirm(`Are you sure you didn't see the ${cryptid.value.name}?`)
+  if (!confirmed) return
+
+  try {
+    await cryptidEncountersService.deleteCryptidEncounter(myEncounter.value.cryptidEncounterId)
+  } catch (error) {
+    Pop.error(error)
+    logger.error('COULD NOT DELTE', error)
+  }
+}
+
 </script>
 
 
@@ -78,9 +92,12 @@ async function createCryptidEncounter() {
             <p class="fs-1 text-warning">
               Encountered By {{ cryptid.encounterCount }} Human<span v-if="cryptid.encounterCount != 1">s</span>
             </p>
-            <div class="mb-3">
-              <button @click="createCryptidEncounter()" class="btn btn-warning ibm-plex-mono-font">
+            <div v-if="account" class="mb-3 ibm-plex-mono-font">
+              <button v-if="!myEncounter" @click="createCryptidEncounter()" class="btn btn-warning">
                 I have encountered the {{ cryptid.name }}
+              </button>
+              <button v-else @click="deleteCryptidEncounter()" class="btn btn-danger">
+                On second thought, I have not encountered the {{ cryptid.name }}
               </button>
             </div>
             <div class="d-flex flex-wrap gap-3">

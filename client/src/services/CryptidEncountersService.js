@@ -4,6 +4,14 @@ import { AppState } from "@/AppState.js"
 import { CryptidEncounterProfile } from "@/models/CryptidEncounterProfile.js"
 
 class CryptidEncountersService {
+  async deleteCryptidEncounter(cryptidEncounterId) {
+    const response = await api.delete(`api/cryptidEncounters/${cryptidEncounterId}`)
+    logger.log('DELETED ENCOUNTER ❌🐸', response.data)
+    const profiles = AppState.cryptidEncounterProfiles
+    const index = profiles.findIndex(profile => profile.cryptidEncounterId == cryptidEncounterId)
+    profiles.splice(index, 1)
+    AppState.cryptid.encounterCount--
+  }
   async createCryptidEncounter(encounterData) {
     const response = await api.post('api/cryptidEncounters', encounterData)
     logger.log('CREATED ENCOUNTER 🐸', response.data)
