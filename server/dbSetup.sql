@@ -64,6 +64,15 @@ FROM
 WHERE
   cryptid_encounters.id = 2;
 
+SELECT
+  cryptid_encounters.id AS cryptid_encounter_id,
+  accounts.*
+FROM
+  cryptid_encounters
+  JOIN accounts ON accounts.id = cryptid_encounters.account_id
+WHERE
+  cryptid_encounters.cryptid_id = 9;
+
 INSERT INTO
   cryptids (
     name,

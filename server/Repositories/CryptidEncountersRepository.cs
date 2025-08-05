@@ -1,4 +1,5 @@
 
+
 namespace cryptipedia.Repositories;
 
 public class CryptidEncountersRepository
@@ -27,5 +28,20 @@ public class CryptidEncountersRepository
     CryptidEncounterProfile profile = _db.Query<CryptidEncounterProfile>(sql, cryptidEncounterData).SingleOrDefault();
 
     return profile;
+  }
+
+  internal List<CryptidEncounterProfile> GetCryptidEncounterProfilesByCryptidId(int cryptidId)
+  {
+    string sql = @"
+    SELECT
+    cryptid_encounters.id AS cryptid_encounter_id,
+    accounts.*
+    FROM cryptid_encounters
+    JOIN accounts ON accounts.id = cryptid_encounters.account_id
+    WHERE cryptid_encounters.cryptid_id = @cryptidId;";
+
+    List<CryptidEncounterProfile> profiles = _db.Query<CryptidEncounterProfile>(sql, new { cryptidId }).ToList();
+
+    return profiles;
   }
 }
