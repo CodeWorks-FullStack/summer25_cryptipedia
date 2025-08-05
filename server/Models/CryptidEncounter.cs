@@ -13,3 +13,8 @@ public class CryptidEncounterProfile : Profile
 {
   public int CryptidEncounterId { get; set; }
 }
+
+public class CryptidEncounterCryptid : Cryptid
+{
+  public int CryptidEncounterId { get; set; }
+}

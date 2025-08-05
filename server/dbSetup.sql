@@ -73,6 +73,28 @@ FROM
 WHERE
   cryptid_encounters.cryptid_id = 9;
 
+SELECT
+  cryptids.*,
+  cryptid_encounters.id AS cryptid_encounter_id,
+  accounts.*
+FROM
+  cryptid_encounters
+  JOIN cryptids ON cryptid_encounters.cryptid_id = cryptids.id
+  JOIN accounts ON accounts.id = cryptids.discoverer_id
+WHERE
+  cryptid_encounters.account_id = '65f87bc1e02f1ee243874743';
+
+SELECT
+  cryptid_encounters.*,
+  cryptids.*,
+  accounts.*
+FROM
+  cryptid_encounters
+  JOIN cryptids ON cryptid_encounters.cryptid_id = cryptids.id
+  JOIN accounts ON accounts.id = cryptids.discoverer_id
+WHERE
+  cryptid_encounters.account_id = '65f87bc1e02f1ee243874743';
+
 INSERT INTO
   cryptids (
     name,
