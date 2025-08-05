@@ -33,14 +33,16 @@ CREATE TABLE
     cryptid_id INT NOT NULL,
     FOREIGN KEY (account_id) REFERENCES accounts (id) ON DELETE CASCADE,
     FOREIGN KEY (cryptid_id) REFERENCES cryptids (id) ON DELETE CASCADE,
-    UNIQUE (account_id, cryptid_id)
+    UNIQUE (account_id, cryptid_id) -- jeremy can only encounter the mothman one time
   );
 
+-- selects all cryptids
 SELECT
   *
 FROM
   cryptids;
 
+-- selects all cryptids with the discoverer joined
 SELECT
   cryptids.*,
   accounts.*
@@ -48,6 +50,7 @@ FROM
   cryptids
   JOIN accounts ON accounts.id = cryptids.discoverer_id;
 
+-- selects all cryptids that have `monster` in their name
 SELECT
   *
 FROM
@@ -55,6 +58,7 @@ FROM
 WHERE
   name LIKE '%monster%';
 
+-- selects a single account that encountered a cryptid
 SELECT
   cryptid_encounters.id AS cryptid_encounter_id,
   accounts.*
@@ -64,6 +68,7 @@ FROM
 WHERE
   cryptid_encounters.id = 2;
 
+-- selects all accounts that encountered Dr. Pepper
 SELECT
   cryptid_encounters.id AS cryptid_encounter_id,
   accounts.*
@@ -73,6 +78,7 @@ FROM
 WHERE
   cryptid_encounters.cryptid_id = 9;
 
+-- selects all of the cryptids encountered by jerms
 SELECT
   cryptids.*,
   cryptid_encounters.id AS cryptid_encounter_id,
@@ -84,6 +90,7 @@ FROM
 WHERE
   cryptid_encounters.account_id = '65f87bc1e02f1ee243874743';
 
+-- selects all rows without using alias columns
 SELECT
   cryptid_encounters.*,
   cryptids.*,
@@ -95,15 +102,20 @@ FROM
 WHERE
   cryptid_encounters.account_id = '65f87bc1e02f1ee243874743';
 
+-- selects all cryptids and counts how many times each cryptid has been encountered
 SELECT
   cryptids.*,
+  -- counts summary rows
   COUNT(cryptid_encounters.id) AS encounter_count
 FROM
   cryptids
+  -- always brings in the cryptids, brings in cryptid encounters if they exist, and null columns if there is no encounter
   LEFT JOIN cryptid_encounters ON cryptids.id = cryptid_encounters.cryptid_id
+  -- summarizes repeating rows
 GROUP BY
   cryptids.id;
 
+-- gets the average threat level for each different cryptid origin
 SELECT
   origin,
   AVG(threat_level) AS average_threat_level
@@ -112,11 +124,7 @@ FROM
 GROUP BY
   origin;
 
-SELECT
-  *
-FROM
-  cryptid_encounters;
-
+-- selects all cryptids, counts the encounters with that cryptid, and joins the discoverer
 SELECT
   cryptids.*,
   COUNT(cryptid_encounters.id) AS encounter_count,
