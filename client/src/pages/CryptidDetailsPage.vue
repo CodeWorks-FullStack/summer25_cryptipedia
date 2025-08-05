@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import { cryptidEncountersService } from '@/services/CryptidEncountersService.js';
 import { cryptidsService } from '@/services/CryptidsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -10,7 +11,10 @@ const cryptid = computed(() => AppState.cryptid)
 
 const route = useRoute()
 
-onMounted(getCryptidById)
+onMounted(() => {
+  getCryptidById()
+  getCryptidEncounterProfilesByCryptidId()
+})
 
 async function getCryptidById() {
   try {
@@ -18,6 +22,15 @@ async function getCryptidById() {
   } catch (error) {
     Pop.error(error)
     logger.error('COULD NOT GET CRYPTID', error)
+  }
+}
+
+async function getCryptidEncounterProfilesByCryptidId() {
+  try {
+    await cryptidEncountersService.getCryptidEncounterProfilesByCryptidId(route.params.cryptidId)
+  } catch (error) {
+    Pop.error(error)
+    logger.error('COULD NOT GET PROFILES', error)
   }
 }
 
@@ -31,6 +44,7 @@ async function getCryptidById() {
         <div class="italiana-font p-3">
           <h2 class="text-warning text-capitalize">{{ cryptid.origin }} Cryptid</h2>
           <h1>{{ cryptid.name }}</h1>
+          <p class="fs-4 mb-3">Discovered by {{ cryptid.discoverer.name }}</p>
           <p class="ibm-plex-mono-font">
             {{ cryptid.description }}
           </p>
@@ -47,6 +61,9 @@ async function getCryptidById() {
               <span v-for="i in 10" :key="'cryptid-threat-level-' + i" class="mdi fs-1"
                 :class="i <= cryptid.threatLevel ? 'mdi-circle' : 'mdi-circle-outline'"></span>
             </div>
+          </div>
+          <div>
+            <span class="fs-1 text-warning">Encountered By {{ cryptid.encounterCount }} Humans</span>
           </div>
         </div>
       </div>

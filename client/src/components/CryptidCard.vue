@@ -14,7 +14,7 @@ defineProps({
       <img :src="cryptid.imgUrl" :alt="'a blurry picture of the ' + cryptid.name">
       <div class="encounter-info mx-2">
         <span class="mdi mdi-ufo"></span>
-        0
+        {{ cryptid.encounterCount }}
       </div>
       <div class="cryptid-info p-2">
         <span v-if="cryptid.id < 10">0</span>{{ cryptid.id }}

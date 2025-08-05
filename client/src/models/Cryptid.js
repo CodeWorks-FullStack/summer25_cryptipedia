@@ -1,3 +1,5 @@
+import { Profile } from "./Profile.js"
+
 export class Cryptid {
   constructor(data) {
     this.name = data.name
@@ -7,9 +9,10 @@ export class Cryptid {
     this.size = data.size
     this.description = data.description
     this.discovererId = data.discovererId
-    this.discoverer = data.discoverer
+    this.discoverer = new Profile(data.discoverer)
     this.id = data.id
     this.createdAt = new Date(data.createdAt)
     this.updatedAt = new Date(data.updatedAt)
+    this.encounterCount = data.encounterCount
   }
 }
