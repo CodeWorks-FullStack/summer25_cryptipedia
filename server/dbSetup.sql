@@ -95,6 +95,68 @@ FROM
 WHERE
   cryptid_encounters.account_id = '65f87bc1e02f1ee243874743';
 
+SELECT
+  cryptids.*,
+  COUNT(cryptid_encounters.id) AS encounter_count
+FROM
+  cryptids
+  LEFT JOIN cryptid_encounters ON cryptids.id = cryptid_encounters.cryptid_id
+GROUP BY
+  cryptids.id;
+
+SELECT
+  origin,
+  AVG(threat_level) AS average_threat_level
+FROM
+  cryptids
+GROUP BY
+  origin;
+
+SELECT
+  *
+FROM
+  cryptid_encounters;
+
+SELECT
+  cryptids.*,
+  COUNT(cryptid_encounters.id) AS encounter_count,
+  accounts.*
+FROM
+  cryptids
+  LEFT JOIN cryptid_encounters ON cryptids.id = cryptid_encounters.cryptid_id
+  JOIN accounts ON accounts.id = cryptids.discoverer_id
+GROUP BY
+  cryptids.id
+ORDER BY
+  cryptids.id ASC;
+
+CREATE VIEW
+  cryptids_with_encounter_count_view AS
+SELECT
+  cryptids.*,
+  COUNT(cryptid_encounters.id) AS encounter_count
+FROM
+  cryptids
+  LEFT JOIN cryptid_encounters ON cryptids.id = cryptid_encounters.cryptid_id
+GROUP BY
+  cryptids.id;
+
+SELECT
+  *
+FROM
+  cryptids_with_encounter_count_view
+WHERE
+  id = 9;
+
+CREATE VIEW
+  encountered_cryptids_view AS
+SELECT
+  cryptids.*,
+  cryptid_encounters.id AS cryptid_encounter_id
+FROM
+  cryptid_encounters
+  JOIN cryptids ON cryptid_encounters.cryptid_id = cryptids.id;
+
 INSERT INTO
   cryptids (
     name,

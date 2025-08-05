@@ -49,9 +49,12 @@ public class CryptidsRepository : IRepository<Cryptid>
     string sql = @"
     SELECT
     cryptids.*,
+    COUNT(cryptid_encounters.id) AS encounter_count,
     accounts.*
     FROM cryptids
+    LEFT JOIN cryptid_encounters ON cryptids.id = cryptid_encounters.cryptid_id
     JOIN accounts ON accounts.id = cryptids.discoverer_id
+    GROUP BY cryptids.id
     ORDER BY cryptids.id ASC;";
 
     List<Cryptid> cryptids = _db.Query<Cryptid, Profile, Cryptid>(sql, MapDiscoverer).ToList();
@@ -63,10 +66,14 @@ public class CryptidsRepository : IRepository<Cryptid>
     string sql = @"
     SELECT
     cryptids.*,
+    COUNT(cryptid_encounters.id) AS encounter_count,
     accounts.*
     FROM cryptids
+    LEFT JOIN cryptid_encounters ON cryptids.id = cryptid_encounters.cryptid_id
     JOIN accounts ON accounts.id = cryptids.discoverer_id
-    WHERE cryptids.name LIKE @Name;";
+    WHERE cryptids.name LIKE @Name
+    GROUP BY cryptids.id
+    ORDER BY cryptids.id ASC;";
 
     object dapperParam = new { Name = $"%{name}%" };
 
@@ -80,7 +87,7 @@ public class CryptidsRepository : IRepository<Cryptid>
     SELECT
     cryptids.*,
     accounts.*
-    FROM cryptids
+    FROM cryptids_with_encounter_count_view cryptids
     JOIN accounts ON accounts.id = cryptids.discoverer_id
     WHERE cryptids.id = @id;";
 

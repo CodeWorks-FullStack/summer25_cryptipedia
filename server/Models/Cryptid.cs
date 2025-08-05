@@ -12,4 +12,5 @@ public class Cryptid : RepoItem<int>
   [MaxLength(5000)] public string Description { get; set; }
   public string DiscovererId { get; set; }
   public Profile Discoverer { get; set; }
+  public int EncounterCount { get; set; }
 }
