@@ -54,8 +54,8 @@ public class CryptidEncountersRepository
   {
     string sql = @"
     SELECT
-    cryptid_encounters.id AS cryptid_encounter_id,
-    accounts.*
+    accounts.*,
+    cryptid_encounters.id AS cryptid_encounter_id
     FROM cryptid_encounters
     JOIN accounts ON accounts.id = cryptid_encounters.account_id
     WHERE cryptid_encounters.cryptid_id = @cryptidId;";

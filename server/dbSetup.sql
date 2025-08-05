@@ -130,6 +130,7 @@ GROUP BY
 ORDER BY
   cryptids.id ASC;
 
+-- creates a custom table that will calculate encounter_count whenever this table is queried
 CREATE VIEW
   cryptids_with_encounter_count_view AS
 SELECT
@@ -148,6 +149,7 @@ FROM
 WHERE
   id = 9;
 
+-- creates a custom table that will work with our DTO
 CREATE VIEW
   encountered_cryptids_view AS
 SELECT
@@ -157,6 +159,7 @@ FROM
   cryptid_encounters
   JOIN cryptids ON cryptid_encounters.cryptid_id = cryptids.id;
 
+-- data to seed database with
 INSERT INTO
   cryptids (
     name,
